@@ -19,7 +19,7 @@ pipeline {
         
         stage('Build Frontend') {
             steps {
-                dir('app/frontend') {
+                dir('/var/lib/jenkins/workspace/LightFeatherPipeline/app/frontend') {
                     sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_FRONTEND_REPO}'
                     sh "docker build -t ${ECR_FRONTEND_REPO}:latest --build-arg REACT_APP_API_URL=${BACKEND_URL} ."
                     sh "docker push ${ECR_FRONTEND_REPO}:latest"
@@ -29,7 +29,7 @@ pipeline {
         
         stage('Build Backend') {
             steps {
-                dir('app/backend') {
+                dir('/var/lib/jenkins/workspace/LightFeatherPipeline/app/backend') {
                     sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_BACKEND_REPO}'
                     sh "docker build -t ${ECR_BACKEND_REPO}:latest --build-arg FRONTEND_URL=${FRONTEND_URL} ."
                     sh "docker push ${ECR_BACKEND_REPO}:latest"
